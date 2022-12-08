@@ -19,46 +19,42 @@ def getWeather():
     geolocator= Nominatim(user_agent="geoapiExercises")
     location= geolocator.geocode(city)
     obj= TimezoneFinder()
-    
     result= obj.timezone_at(lng=location.longitude,lat=location.latitude)
-    
     timezone.config(text=result)
     long_lat.config(text=f"{round(location.latitude)}°N\t{round(location.longitude)}°E")
-
     home=pytz.timezone(result)
     local_time=datetime.now(home)
     current_time=local_time.strftime("%I:%M %p")
     clock.config(text=current_time)
+    api="https://api.openweathermap.org/data/3.0/onecall?lat="+str(location.latitude)+"&lon="+str(location.longitude)+"&units=metric&exclude=hourly&appid="+os.getenv('api_key')+""
     
     #weather
-    api="https://api.openweathermap.org/data/3.0/onecall?lat="+str(location.latitude)+"&lon="+str(location.longitude)+"&units=metric&exclude=hourly&appid="+os.getenv('api_key')+""
     json_data= requests.get(api).json()
-    print(api)
     #current
-    temp= json_data['current']['temp']
-    humidity= json_data['current']['humidity']
-    pressure= json_data['current']['pressure']
-    wind= json_data['current']['wind_speed']
-    description= json_data['current']['weather'][0]['description']
+    temp= json_data['current']['temp'] # reading temperature out of json
+    humidity= json_data['current']['humidity'] # reading humidity out of json
+    pressure= json_data['current']['pressure'] # reading pressure out of json
+    wind= json_data['current']['wind_speed'] # reading wind speed out of json
+    description= json_data['current']['weather'][0]['description'] # reading description out of json
 
-    t.config(text=(temp,"°C"))
+    t.config(text=(temp,"°C"))  # setting eatch lables text 
     h.config(text=(humidity,"%"))
     p.config(text=(pressure, 'hPa'))
     w.config(text=(wind,"m/s"))
     d.config(text=description)
     
     
-    #first cell
+    #first cell / today
     firstdayimage= json_data['daily'][0]['weather'][0]['icon']
     photo1 = ImageTk.PhotoImage(file=f"img/weather_states/{firstdayimage}@2x.png")
-    firstimage.config(image=photo1)
+    firstimage.config(image=photo1) # displaying icon of the weather
     firstimage.image=photo1
     
-    tempday1 = json_data['daily'][0]['temp']["day"]
-    tempnight1=json_data['daily'][0]['temp']['night']
-    day1temp.config(text=f"Day:{tempday1} C°\n Night: {tempnight1} C°")
+    tempday1 = json_data['daily'][0]['temp']["day"] # today's temp at daytime
+    tempnight1=json_data['daily'][0]['temp']['night'] # today's temp at nighttime
+    day1temp.config(text=f"Day:{tempday1} C°\n Night: {tempnight1} C°") # displaying both
     
-    #second cell
+    #second cell / like before but it's the following day and it goes on until the last day of the week
     seconddayimage= json_data['daily'][1]['weather'][0]['icon']
     img=(Image.open(f"img/weather_states/{seconddayimage}@2x.png"))
     resized_image=img.resize((50,50))
@@ -131,8 +127,7 @@ def getWeather():
     day7temp.config(text=f"Day:{tempday7} C°\n Night: {tempnight7} C°")
     
     #days
-    
-    first = datetime.now()
+    first = datetime.now() # displaying the todays dayname
     day1.config(text=first.strftime("%A"))
     
     second = first+timedelta(days=1)
@@ -162,10 +157,10 @@ root.configure(bg='#57adff')
 root.resizable(True,True)
  
 
-Round_box=PhotoImage(file='img/rounded_rectangle.png')
+Round_box=PhotoImage(file='img/rounded_rectangle.png') # current weather background box
 Label(root, image=Round_box, bg='#57adff') .place(x=30, y=110)
 
-#label
+#label / current tepmeratue, humidity etc.
 label1=Label(root,text='Temperature', font=('Helvetica',11),fg='white',bg='#203243')
 label1.place(x=50,y=120)
 
@@ -183,7 +178,6 @@ label5.place(x=50,y=200)
 
 
 ##search box
-
 Search_image=PhotoImage(file='img/searchbar.png')
 myimage=Label (image=Search_image, bg='#57adff')
 myimage.place(x=270, y=115)
@@ -217,7 +211,7 @@ Label(frame, image=secondbox, bg='#212120') .place(x=600, y=30)
 Label(frame, image=secondbox, bg='#212120') .place(x=700, y=30)
 Label(frame, image=secondbox, bg='#212120') .place(x=800, y=30)
 
-#clock (here we will place time)
+#clock / here we will place current time
 
 clock=Label(root, font=('Helvetica',30, 'bold'),fg='white',bg='#57adff')
 clock.place (x=30,y=20)
@@ -231,7 +225,7 @@ long_lat.place(x=700,y=50)
 
 #thpwd
 
-#thpwd
+#thpwd / setting temp,hum,press,wind and desc style and allign them
 t=Label(root, font=("Helvetica",11),fg="white", bg="#203243")
 t.place(x=150, y=120)
 h=Label (root, font=("Helvetica",11),fg="white", bg="#203243")
@@ -243,7 +237,7 @@ w.place(x=150, y=180)
 d=Label(root, font=("Helvetica",11),fg="white", bg="#203243")
 d.place(x=150, y=200)
 
-#first cell
+#first cell / todays card
 firstframe=Frame(root,width=215,height=125,bg="#282829")
 firstframe.place(x=35,y=315)
 day1=Label(firstframe,font="arial 20",bg="#282829",fg="#fff")
