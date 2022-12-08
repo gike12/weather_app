@@ -9,6 +9,8 @@ import pytz
 from PIL import Image,ImageTk
 from dotenv import load_dotenv
 import os
+import locale
+locale.setlocale(locale.LC_TIME, "hu_HU") 
 
 def configure():
     load_dotenv()
@@ -26,8 +28,8 @@ def getWeather():
     local_time=datetime.now(home)
     current_time=local_time.strftime("%I:%M %p")
     clock.config(text=current_time)
-    api="https://api.openweathermap.org/data/3.0/onecall?lat="+str(location.latitude)+"&lon="+str(location.longitude)+"&units=metric&exclude=hourly&appid="+os.getenv('api_key')+""
-    
+    api="https://api.openweathermap.org/data/3.0/onecall?lat="+str(location.latitude)+"&lang=hu&lon="+str(location.longitude)+"&units=metric&exclude=hourly&appid="+os.getenv('api_key')+""
+    print(api)
     #weather
     json_data= requests.get(api).json()
     #current
@@ -52,7 +54,7 @@ def getWeather():
     
     tempday1 = json_data['daily'][0]['temp']["day"] # today's temp at daytime
     tempnight1=json_data['daily'][0]['temp']['night'] # today's temp at nighttime
-    day1temp.config(text=f"Day:{tempday1} C°\n Night:{tempnight1} C°") # displaying both
+    day1temp.config(text=f"Nappal:\n{tempday1} °C\n Éjszaka:\n{tempnight1} °C") # displaying both
     
     #second cell / like before but it's the following day and it goes on until the last day of the week
     seconddayimage= json_data['daily'][1]['weather'][0]['icon']
@@ -64,7 +66,7 @@ def getWeather():
     
     tempday2 = json_data['daily'][1]['temp']["day"]
     tempnight2=json_data['daily'][1]['temp']['night']
-    day2temp.config(text=f"Day:{tempday2} C°\n Night:{tempnight2} C°")
+    day2temp.config(text=f"Nappal:\n{tempday2} °C\n Éjszaka:\n{tempnight2} °C")
     
     #thrird cell
     thirddayimage= json_data['daily'][2]['weather'][0]['icon']
@@ -76,7 +78,7 @@ def getWeather():
     
     tempday3 = json_data['daily'][2]['temp']["day"]
     tempnight3=json_data['daily'][2]['temp']['night']
-    day3temp.config(text=f"Day:{tempday3} C°\n Night:{tempnight3} C°")
+    day3temp.config(text=f"Nappal:\n{tempday3} °C\n Éjszaka:\n{tempnight3} °C")
     
     #fourth cell
     fourthdayimage= json_data['daily'][3]['weather'][0]['icon']
@@ -88,7 +90,7 @@ def getWeather():
     
     tempday4 = json_data['daily'][3]['temp']["day"]
     tempnight4=json_data['daily'][3]['temp']['night']
-    day4temp.config(text=f"Day:{tempday4} C°\n Night:{tempnight4} C°")
+    day4temp.config(text=f"Nappal:\n{tempday4} °C\n Éjszaka:\n{tempnight4} °C")
     
     #fifth cell
     fifthdayimage= json_data['daily'][4]['weather'][0]['icon']
@@ -100,7 +102,7 @@ def getWeather():
     
     tempday5 = json_data['daily'][4]['temp']["day"]
     tempnight5=json_data['daily'][4]['temp']['night']
-    day5temp.config(text=f"Day:{tempday5} C°\n Night:{tempnight5} C°")
+    day5temp.config(text=f"Nappal:\n{tempday5} °C\n Éjszaka:\n{tempnight5} °C")
     
     #sixth cell
     sixthdayimage= json_data['daily'][5]['weather'][0]['icon']
@@ -112,7 +114,7 @@ def getWeather():
     
     tempday6 = json_data['daily'][5]['temp']["day"]
     tempnight6=json_data['daily'][5]['temp']['night']
-    day6temp.config(text=f"Day:{tempday6} C°\n Night:{tempnight6} C°")
+    day6temp.config(text=f"Nappal:\n{tempday6} °C\nÉjszaka:\n{tempnight6} °C")
     
     #seventh cell
     seventhdayimage= json_data['daily'][6]['weather'][0]['icon']
@@ -124,7 +126,7 @@ def getWeather():
     
     tempday7 = json_data['daily'][6]['temp']["day"]
     tempnight7=json_data['daily'][6]['temp']['night']
-    day7temp.config(text=f"Day:{tempday7} C°\n Night:{tempnight7} C°")
+    day7temp.config(text=f"Nappal:\n{tempday7} °C\n Éjszaka:\n{tempnight7} °C")
     
     #days
     first = datetime.now() # displaying the todays dayname
@@ -161,19 +163,19 @@ Round_box=PhotoImage(file='img/rounded_rectangle.png') # current weather backgro
 Label(root, image=Round_box, bg='#57adff') .place(x=30, y=110)
 
 #label / current tepmeratue, humidity etc.
-label1=Label(root,text='Temperature', font=('Helvetica',11),fg='white',bg='#203243')
+label1=Label(root,text='Hőmérséklet', font=('Helvetica',11),fg='white',bg='#203243')
 label1.place(x=50,y=120)
 
-label2=Label(root, text='Humidity', font=('Helvetica',11),fg='white', bg='#203243')
+label2=Label(root, text='Páratartalom', font=('Helvetica',11),fg='white', bg='#203243')
 label2.place(x=50,y=140)
 
-label3=Label(root, text='Pressure', font=('Helvetica',11),fg='white', bg='#203243')
+label3=Label(root, text='Nyomás', font=('Helvetica',11),fg='white', bg='#203243')
 label3.place(x=50,y=160)
 
-label4=Label (root, text='Wind Speed', font=( 'Helvetica' ,11),fg='white', bg='#203243')
+label4=Label (root, text='Szél', font=( 'Helvetica' ,11),fg='white', bg='#203243')
 label4.place(x=50,y=180)
 
-label5=Label (root, text='Description', font=( 'Helvetica' ,11),fg='white', bg='#203243')
+label5=Label (root, text='Leírás', font=( 'Helvetica' ,11),fg='white', bg='#203243')
 label5.place(x=50,y=200)
 
 
@@ -241,11 +243,11 @@ d.place(x=150, y=200)
 firstframe=Frame(root,width=215,height=125,bg="#282829")
 firstframe.place(x=35,y=315)
 day1=Label(firstframe,font="arial 20",bg="#282829",fg="#fff")
-day1.place(x=60,y=0)
+day1.place(x=0,y=0)
 firstimage=Label(firstframe,bg="#282829")
 firstimage.place(x=-5,y=45)
-day1temp=Label(firstframe,bg="#57adff",font="arial 15 bold")
-day1temp.place(x=77,y=50)
+day1temp=Label(firstframe,bg="#282829",font="arial 15 bold", fg="#57adff")
+day1temp.place(x=120,y=25)
 
 #second cell
 secondframe=Frame (root ,width=75,height=120,bg="#282829")
@@ -255,7 +257,7 @@ day2.place(x=9,y=0)
 secondimage=Label(secondframe,bg="#282829")
 secondimage.place(x=7,y=20)
 day2temp=Label(secondframe,bg="#282829",fg="#fff")
-day2temp.place(x=-4,y=60)
+day2temp.place(x=10,y=60)
 
 #third cell
 thirdframe=Frame(root,width=75,height=120,bg="#282829")
@@ -265,7 +267,7 @@ day3.place(x=9,y=0)
 thrirdimage=Label(thirdframe,bg="#282829")
 thrirdimage.place(x=7,y=20)
 day3temp=Label(thirdframe,bg="#282829",fg="#fff")
-day3temp.place(x=-4,y=60)
+day3temp.place(x=10,y=60)
 
 #fourth cell
 fourthframe=Frame (root ,width=75,height=120,bg="#282829")
@@ -275,7 +277,7 @@ day4.place(x=9,y=0)
 fourthimage=Label(fourthframe,bg="#282829")
 fourthimage.place(x=7,y=20)
 day4temp=Label(fourthframe,bg="#282829",fg="#fff")
-day4temp.place(x=-4,y=60)
+day4temp.place(x=10,y=60)
 
 #fifth cell
 fifthframe=Frame(root,width=75,height=120,bg="#282829")
@@ -285,7 +287,7 @@ day5.place(x=9,y=0)
 fifthimage=Label(fifthframe,bg="#282829")
 fifthimage.place(x=7,y=20)
 day5temp=Label(fifthframe,bg="#282829",fg="#fff")
-day5temp.place(x=-4,y=60)
+day5temp.place(x=10,y=60)
 
 #sixth cell
 sixthframe=Frame(root,width=75,height=120,bg="#282829")
@@ -295,7 +297,7 @@ day6.place(x=9,y=0)
 sixthimage=Label(sixthframe,bg="#282829")
 sixthimage.place(x=7,y=20)
 day6temp=Label(sixthframe,bg="#282829",fg="#fff")
-day6temp.place(x=-4,y=60)
+day6temp.place(x=10,y=60)
 
 #seventh cell
 seventhframe=Frame (root ,width=75,height=120, bg="#282829")
@@ -305,7 +307,7 @@ day7.place(x=9,y=0)
 seventhimage=Label(seventhframe,bg="#282829")
 seventhimage.place(x=7,y=20)
 day7temp=Label(seventhframe,bg="#282829",fg="#fff")
-day7temp.place(x=-4,y=60)
+day7temp.place(x=10,y=60)
 
 
 root.mainloop()
