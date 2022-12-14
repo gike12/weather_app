@@ -18,26 +18,26 @@ def configure():
 def getWeather():
     city=textfield.get()
     
-    geolocator= Nominatim(user_agent="geoapiExercises")
-    location= geolocator.geocode(city)
-    obj= TimezoneFinder()
-    result= obj.timezone_at(lng=location.longitude,lat=location.latitude)
+    geolocator=Nominatim(user_agent="geoapiExercises")
+    location=geolocator.geocode(city)
+    obj=TimezoneFinder()
+    result=obj.timezone_at(lng=location.longitude,lat=location.latitude)
     timezone.config(text=result)
     long_lat.config(text=f"{round(location.latitude)}°N\t{round(location.longitude)}°E")
     home=pytz.timezone(result)
     local_time=datetime.now(home)
-    current_time=local_time.strftime("%I:%M %p")
+    current_time=local_time.strftime("%I:%M %p") # to make it 24h time format use "%H:%M"
     clock.config(text=current_time)
     api="https://api.openweathermap.org/data/3.0/onecall?lat="+str(location.latitude)+"&lang=hu&lon="+str(location.longitude)+"&units=metric&exclude=hourly&appid="+os.getenv('api_key')+""
     print(api)
     #weather
-    json_data= requests.get(api).json()
+    json_data=requests.get(api).json()
     #current
-    temp= json_data['current']['temp'] # reading temperature out of json
-    humidity= json_data['current']['humidity'] # reading humidity out of json
-    pressure= json_data['current']['pressure'] # reading pressure out of json
-    wind= json_data['current']['wind_speed'] # reading wind speed out of json
-    description= json_data['current']['weather'][0]['description'] # reading description out of json
+    temp=json_data['current']['temp'] # reading temperature out of json
+    humidity=json_data['current']['humidity'] # reading humidity out of json
+    pressure=json_data['current']['pressure'] # reading pressure out of json
+    wind=json_data['current']['wind_speed'] # reading wind speed out of json
+    description=json_data['current']['weather'][0]['description'] # reading description out of json
 
     t.config(text=(temp,"°C"))  # setting eatch lables text 
     h.config(text=(humidity,"%"))
@@ -47,44 +47,44 @@ def getWeather():
     
     
     #first cell / today
-    firstdayimage= json_data['daily'][0]['weather'][0]['icon']
-    photo1 = ImageTk.PhotoImage(file=f"img/weather_states/{firstdayimage}@2x.png")
+    firstdayimage=json_data['daily'][0]['weather'][0]['icon']
+    photo1=ImageTk.PhotoImage(file=f"img/weather_states/{firstdayimage}@2x.png")
     firstimage.config(image=photo1) # displaying icon of the weather
     firstimage.image=photo1
     
-    tempday1 = json_data['daily'][0]['temp']["day"] # today's temp at daytime
+    tempday1=json_data['daily'][0]['temp']["day"] # today's temp at daytime
     tempnight1=json_data['daily'][0]['temp']['night'] # today's temp at nighttime
     day1temp.config(text=f"Nappal:\n{tempday1} °C\n Éjszaka:\n{tempnight1} °C") # displaying both
     
     #second cell / like before but it's the following day and it goes on until the last day of the week
-    seconddayimage= json_data['daily'][1]['weather'][0]['icon']
+    seconddayimage=json_data['daily'][1]['weather'][0]['icon']
     img=(Image.open(f"img/weather_states/{seconddayimage}@2x.png"))
     resized_image=img.resize((50,50))
-    photo2 = ImageTk.PhotoImage(resized_image)
+    photo2=ImageTk.PhotoImage(resized_image)
     secondimage.config(image=photo2)
     secondimage.image=photo2
     
-    tempday2 = json_data['daily'][1]['temp']["day"]
+    tempday2=json_data['daily'][1]['temp']["day"]
     tempnight2=json_data['daily'][1]['temp']['night']
     day2temp.config(text=f"Nappal:\n{tempday2} °C\n Éjszaka:\n{tempnight2} °C")
     
     #thrird cell
-    thirddayimage= json_data['daily'][2]['weather'][0]['icon']
+    thirddayimage=json_data['daily'][2]['weather'][0]['icon']
     img=(Image.open(f"img/weather_states/{thirddayimage}@2x.png"))
     resized_image=img.resize((50,50))
-    photo3 = ImageTk.PhotoImage(resized_image)
+    photo3=ImageTk.PhotoImage(resized_image)
     thrirdimage.config(image=photo3)
     thrirdimage.image=photo3
     
-    tempday3 = json_data['daily'][2]['temp']["day"]
+    tempday3=json_data['daily'][2]['temp']["day"]
     tempnight3=json_data['daily'][2]['temp']['night']
     day3temp.config(text=f"Nappal:\n{tempday3} °C\n Éjszaka:\n{tempnight3} °C")
     
     #fourth cell
-    fourthdayimage= json_data['daily'][3]['weather'][0]['icon']
+    fourthdayimage=json_data['daily'][3]['weather'][0]['icon']
     img=(Image.open(f"img/weather_states/{fourthdayimage}@2x.png"))
     resized_image=img.resize((50,50))
-    photo4 = ImageTk.PhotoImage(resized_image)
+    photo4=ImageTk.PhotoImage(resized_image)
     fourthimage.config(image=photo4)
     fourthimage.image=photo4
     
@@ -93,61 +93,61 @@ def getWeather():
     day4temp.config(text=f"Nappal:\n{tempday4} °C\n Éjszaka:\n{tempnight4} °C")
     
     #fifth cell
-    fifthdayimage= json_data['daily'][4]['weather'][0]['icon']
+    fifthdayimage=json_data['daily'][4]['weather'][0]['icon']
     img=(Image.open(f"img/weather_states/{fifthdayimage}@2x.png"))
     resized_image=img.resize((50,50))
-    photo5 = ImageTk.PhotoImage(resized_image)
+    photo5=ImageTk.PhotoImage(resized_image)
     fifthimage.config(image=photo5)
     fifthimage.image=photo5
     
-    tempday5 = json_data['daily'][4]['temp']["day"]
+    tempday5=json_data['daily'][4]['temp']["day"]
     tempnight5=json_data['daily'][4]['temp']['night']
     day5temp.config(text=f"Nappal:\n{tempday5} °C\n Éjszaka:\n{tempnight5} °C")
     
     #sixth cell
-    sixthdayimage= json_data['daily'][5]['weather'][0]['icon']
+    sixthdayimage=json_data['daily'][5]['weather'][0]['icon']
     img=(Image.open(f"img/weather_states/{sixthdayimage}@2x.png"))
     resized_image=img.resize((50,50))
-    photo6 = ImageTk.PhotoImage(resized_image)
+    photo6=ImageTk.PhotoImage(resized_image)
     sixthimage.config(image=photo6)
     sixthimage.image=photo6
     
-    tempday6 = json_data['daily'][5]['temp']["day"]
+    tempday6=json_data['daily'][5]['temp']["day"]
     tempnight6=json_data['daily'][5]['temp']['night']
     day6temp.config(text=f"Nappal:\n{tempday6} °C\nÉjszaka:\n{tempnight6} °C")
     
     #seventh cell
-    seventhdayimage= json_data['daily'][6]['weather'][0]['icon']
+    seventhdayimage=json_data['daily'][6]['weather'][0]['icon']
     img=(Image.open(f"img/weather_states/{seventhdayimage}@2x.png"))
     resized_image=img.resize((50,50))
-    photo7 = ImageTk.PhotoImage(resized_image)
+    photo7=ImageTk.PhotoImage(resized_image)
     seventhimage.config(image=photo7)
     seventhimage.image=photo7
     
-    tempday7 = json_data['daily'][6]['temp']["day"]
+    tempday7=json_data['daily'][6]['temp']["day"]
     tempnight7=json_data['daily'][6]['temp']['night']
     day7temp.config(text=f"Nappal:\n{tempday7} °C\n Éjszaka:\n{tempnight7} °C")
     
     #days
-    first = datetime.now() # displaying the todays dayname
+    first=datetime.now() # displaying the todays dayname
     day1.config(text=first.strftime("%A"))
     
-    second = first+timedelta(days=1)
+    second=first+timedelta(days=1)
     day2.config(text=second.strftime("%A"))
     
-    third = first+timedelta(days=2)
+    third=first+timedelta(days=2)
     day3.config(text=third.strftime("%A"))
 
-    fourth = first+timedelta(days=3)
+    fourth=first+timedelta(days=3)
     day4.config(text=fourth. strftime("%A"))
 
-    fifth = first+timedelta(days=4)
+    fifth=first+timedelta(days=4)
     day5.config(text=fifth. strftime("%A"))
 
-    sixth = first+timedelta(days=5)
+    sixth=first+timedelta(days=5)
     day6.config(text=sixth.strftime("%A") )
 
-    seventh = first+timedelta(days=4)
+    seventh=first+timedelta(days=4)
     day7.config(text=seventh. strftime("%A"))
 
 
