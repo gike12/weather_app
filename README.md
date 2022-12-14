@@ -12,4 +12,4 @@ It also has a 7 day forecast with day and night temperatures and little icons th
   pip install pillow
 ```
 # About API key
-To use it you need your own api key from [OpenWeather][https://openweathermap.org/api].
+To use it you need your own api key from [OpenWeather](https://openweathermap.org/api).
